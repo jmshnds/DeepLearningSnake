@@ -20,8 +20,8 @@ In `pysnake.py` the following parameters may be changed:<br/>
 - REPLAY\_MEMORY: replay memory of past games
 - BATCH: batch size pulled from replay memory
 - LR: learning rate
-
 <br/>
+Run program with `pysnake.py`
 
 ## Results
 After training for about 1,000,000 timesteps I found that the Snake tended to prefer going straight over time. 
