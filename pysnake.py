@@ -10,8 +10,8 @@ from collections import deque
 GAME = 'snake'
 ACTIONS = 5
 GAMMA = 0.99
-OBSERVE = 100000 # to populate replay memory
-EXPLORE = 2000000
+OBSERVE = 50000 # to populate replay memory
+EXPLORE = 1000000
 FINAL_EPSILON = 0.1
 INITIAL_EPSILON = 0.1
 REPLAY_MEMORY = 50000
