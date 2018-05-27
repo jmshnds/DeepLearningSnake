@@ -20,7 +20,7 @@ In `pysnake.py` the following parameters may be changed:<br/>
 - REPLAY\_MEMORY: replay memory of past games
 - BATCH: batch size pulled from replay memory
 - LR: learning rate
-<br/>
+
 Run program with `pysnake.py`<br/>
 
 ## Results
