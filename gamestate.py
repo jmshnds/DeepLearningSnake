@@ -91,7 +91,6 @@ class GameState:
 
 		image_data = pygame.surfarray.array3d(pygame.display.get_surface())
 		pygame.display.update()
-		#clock.tick(24)
-		clock.tick(60)
+		clock.tick(24)
 
 		return image_data, reward, terminal
