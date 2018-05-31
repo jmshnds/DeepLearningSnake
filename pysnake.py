@@ -157,6 +157,17 @@ def trainNetwork(s, readout, h_fc1, sess):
 
         # only train if done observing
         if t > OBSERVE:
+
+            # Check if the last action resulted in a terminal state
+            if terminal:
+                avg_score += game_score
+                games += 1
+                # Save average score every 100 complete games (during training)
+                if games % 100 == 0:
+                    with open('./logs_' + GAME + '/scores.txt', 'a') as score_file:
+                        score_file.write('game %d: %f\n' % (games, avg_score/100))
+                    avg_score = 0
+
             # sample a minibatch to train on
             minibatch = random.sample(D, BATCH)
 
@@ -173,14 +184,6 @@ def trainNetwork(s, readout, h_fc1, sess):
                 # if terminal, only equals reward
                 if terminal:
                     y_batch.append(r_batch[i])
-                    avg_score += game_score
-                    games += 1
-
-                    # Save average score every 100 complete games (during training)
-                    if games % 100 == 0:
-                        with open('./logs_' + GAME + '/scores.txt', 'a') as score_file:
-                            score_file.write('game %d: %f\n' % (games, avg_score/100))
-                        avg_score = 0
                 else:
                     y_batch.append(r_batch[i] + GAMMA * np.max(readout_j1_batch[i]))
 
@@ -190,8 +193,6 @@ def trainNetwork(s, readout, h_fc1, sess):
                 a : a_batch,
                 s : s_j_batch}
             )
-
-            print("score %d / game %d\n" % (avg_score, games))
 
         # update the old values
         s_t = s_t1
