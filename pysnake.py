@@ -91,7 +91,6 @@ def trainNetwork(s, readout, h_fc1, sess):
     # printing
     a_file = open("logs_" + GAME + "/readout.txt", 'w')
     h_file = open("logs_" + GAME + "/hidden.txt", 'w')
-    score_file = open("logs_" + GAME + "/scores.txt", 'a')
 
     # for tracking avg score
     games = 1
@@ -107,7 +106,8 @@ def trainNetwork(s, readout, h_fc1, sess):
 
     # saving and loading networks
     saver = tf.train.Saver()
-    sess.run(tf.initialize_all_variables())
+    #sess.run(tf.initialize_all_variables())
+    sess.run(tf.global_variables_initializer())
     checkpoint = tf.train.get_checkpoint_state("saved_networks")
     if checkpoint and checkpoint.model_checkpoint_path:
         saver.restore(sess, checkpoint.model_checkpoint_path)
@@ -178,7 +178,8 @@ def trainNetwork(s, readout, h_fc1, sess):
 
                     # Save average score every 100 complete games (during training)
                     if games % 100 == 0:
-                        score_file.write('game %d: %f\n' % (games, avg_score/100))
+                        with open('./logs_' + GAME + '/scores.txt', 'a') as score_file:
+                            score_file.write('game %d: %f\n' % (games, avg_score/100))
                         avg_score = 0
                 else:
                     y_batch.append(r_batch[i] + GAMMA * np.max(readout_j1_batch[i]))
@@ -227,7 +228,7 @@ def playGame():
 
 def main():
     # Check command line args to set options
-    
+
     playGame()
 
 if __name__ == "__main__":
