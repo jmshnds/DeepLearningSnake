@@ -91,11 +91,16 @@ def trainNetwork(s, readout, h_fc1, sess):
     # printing
     a_file = open("logs_" + GAME + "/readout.txt", 'w')
     h_file = open("logs_" + GAME + "/hidden.txt", 'w')
+    score_file = open("logs_" + GAME + "/scores.txt", 'a')
+
+    # for tracking avg score
+    games = 1
+    avg_score = 0
 
     # get the first state by doing nothing and preprocess the image to 80x80x4
     do_nothing = np.zeros(ACTIONS)
     do_nothing[0] = 1
-    x_t, r_0, terminal = game_state.frame_step(do_nothing)
+    x_t, r_0, terminal, game_score = game_state.frame_step(do_nothing)
     x_t = cv2.cvtColor(cv2.resize(x_t, (80, 80)), cv2.COLOR_BGR2GRAY)
     ret, x_t = cv2.threshold(x_t,1,255,cv2.THRESH_BINARY)
     s_t = np.stack((x_t, x_t, x_t, x_t), axis=2)
@@ -134,9 +139,13 @@ def trainNetwork(s, readout, h_fc1, sess):
             epsilon -= (INITIAL_EPSILON - FINAL_EPSILON) / EXPLORE
 
         # run the selected action and observe next state and reward
-        x_t1_colored, r_t, terminal = game_state.frame_step(a_t)
+        x_t1_colored, r_t, terminal, game_score = game_state.frame_step(a_t)
+
+        # Convert to gray
         x_t1 = cv2.cvtColor(cv2.resize(x_t1_colored, (80, 80)), cv2.COLOR_BGR2GRAY)
+
         ret, x_t1 = cv2.threshold(x_t1, 1, 255, cv2.THRESH_BINARY)
+
         x_t1 = np.reshape(x_t1, (80, 80, 1))
         #s_t1 = np.append(x_t1, s_t[:,:,1:], axis = 2)
         s_t1 = np.append(x_t1, s_t[:, :, :3], axis=2)
@@ -164,6 +173,13 @@ def trainNetwork(s, readout, h_fc1, sess):
                 # if terminal, only equals reward
                 if terminal:
                     y_batch.append(r_batch[i])
+                    avg_score += game_score
+                    games += 1
+
+                    # Save average score every 100 complete games (during training)
+                    if games % 100 == 0:
+                        score_file.write('game %d: %f\n' % (games, avg_score/100))
+                        avg_score = 0
                 else:
                     y_batch.append(r_batch[i] + GAMMA * np.max(readout_j1_batch[i]))
 
@@ -173,6 +189,8 @@ def trainNetwork(s, readout, h_fc1, sess):
                 a : a_batch,
                 s : s_j_batch}
             )
+
+            print("score %d / game %d\n" % (avg_score, games))
 
         # update the old values
         s_t = s_t1
@@ -208,6 +226,8 @@ def playGame():
     trainNetwork(s, readout, h_fc1, sess)
 
 def main():
+    # Check command line args to set options
+    
     playGame()
 
 if __name__ == "__main__":

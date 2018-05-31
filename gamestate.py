@@ -93,4 +93,4 @@ class GameState:
 		pygame.display.update()
 		clock.tick(60)
 
-		return image_data, reward, terminal
+		return image_data, reward, terminal, self.score
