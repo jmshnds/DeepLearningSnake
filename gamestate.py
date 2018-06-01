@@ -36,6 +36,7 @@ class GameState:
 
 		reward = 0.0
 		terminal = False
+		lastScore = self.score
 
 		if sum(input_actions) != 1:
 			raise ValueError('Multiple Input Actions!')
@@ -77,6 +78,7 @@ class GameState:
 		for i in range(1, len(self.player.tail)):
 		    if self.player.x == self.player.tail[i].x and self.player.y == self.player.tail[i].y:
 		        print("Game over: tail")
+		        lastScore = self.score
 		        self.__init__()
 		        terminal = True
 		        reward = -1
@@ -93,4 +95,4 @@ class GameState:
 		pygame.display.update()
 		clock.tick(60)
 
-		return image_data, reward, terminal, self.score
+		return image_data, reward, terminal, lastScore
