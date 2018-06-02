@@ -165,7 +165,8 @@ def trainNetwork(s, readout, h_fc1, sess):
                 # Save average score every 100 complete games (during training)
                 if games % 100 == 0:
                     with open('./logs_' + GAME + '/scores.txt', 'a') as score_file:
-                        score_file.write('game %d: %f\n' % (games, avg_score/100))
+                        # Write game/score data suitable for csv table
+                        score_file.write('%d, %f\n' % (games, avg_score/100))
                     avg_score = 0
 
             # sample a minibatch to train on
