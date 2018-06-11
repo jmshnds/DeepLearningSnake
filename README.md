@@ -11,15 +11,15 @@ Some of these changes include changing the learning rate and epsilon values.
 My goal is to get a working snake AI and try it out with other variations of Snake games. <br/>
 
 ## Usage
-Modify FPS settings in `gamestate.py` as needed.<br/>
+Modify FPS settings in `gamestate.py` as needed. I found that when testing on multiple computers this made a significant difference in terms of training time. On one computer I was only able to train at about ~10 FPS but with another computer I was able to train at about ~60 FPS. <br/>
 In `pysnake.py` the following parameters may be changed:<br/>
-- OBSERVE: number of observe timesteps, used to populate replay memory
+- OBSERVE: number of observe timesteps, used to populate replay memory. To train from scratch OBSERVE was initially set to 10,000. Then once a checkpoint of ~1 million timesteps was acheived to continue training this was set to 50,000. 
 - EXPLORE: number of explore timesteps
-- FINAL\_EPSILON: final epsilon
-- INITIAL\_EPSILON: starting epsilon, rate of a random action being chosen
-- REPLAY\_MEMORY: replay memory of past games
+- FINAL\_EPSILON: final epsilon. This value was set to 0.1 as in the original DQN paper. 
+- INITIAL\_EPSILON: starting epsilon, rate of a random action being chosen. To train from scratch this was initially set to 1. Then once a checkpoint of ~1 million timesteps was acheived to continue training this was set to 0.1. 
+- REPLAY\_MEMORY: replay memory of past games. Similar to the FlappyBird example, this was set to 50,000 rather than 1 million. 
 - BATCH: batch size pulled from replay memory
-- LR: learning rate
+- LR: learning rate. This was set to 0.00025 as it was in the original DQN paper, rather than 1e-6 as was used in the FlappyBird example. 
 
 Run program with `pysnake.py`<br/>
 
