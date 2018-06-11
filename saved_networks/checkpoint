@@ -1,6 +1,0 @@
-model_checkpoint_path: "snake-dqn-90000"
-all_model_checkpoint_paths: "snake-dqn-50000"
-all_model_checkpoint_paths: "snake-dqn-60000"
-all_model_checkpoint_paths: "snake-dqn-70000"
-all_model_checkpoint_paths: "snake-dqn-80000"
-all_model_checkpoint_paths: "snake-dqn-90000"
