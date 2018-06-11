@@ -30,3 +30,6 @@ The snake would receive 0 reward for doing nothing and +1 reward for eating a fo
 I thought that this reward setup would help push the snake to prefer going after food pellets. 
 I changed the "do-nothing" reward that was set to 0.1 in the FlappyBird example to just 0 to help the snake further prefer food pellets. 
 
+The following chart shows the score results after training for about 1,000,000+ timesteps. This chart tracks the average score over 100 consecutive games for 4700 games during the initial training phase. As shown below, the score begins to significantly improve toward the end of the chart. 
+
+![chart for average score](https://github.com/jmshnds/DeepLearningSnake/blob/master/Images/scores_100avg_1mil.png)
