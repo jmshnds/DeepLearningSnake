@@ -10,10 +10,10 @@ from collections import deque
 GAME = 'snake'
 ACTIONS = 5
 GAMMA = 0.99
-OBSERVE = 50000 # to populate replay memory
+OBSERVE = 10000 # to populate replay memory
 EXPLORE = 1000000
 FINAL_EPSILON = 0.1
-INITIAL_EPSILON = 0.1
+INITIAL_EPSILON = 1.0
 REPLAY_MEMORY = 50000
 BATCH = 32
 FRAME_PER_ACTION = 1
@@ -164,10 +164,15 @@ def trainNetwork(s, readout, h_fc1, sess):
                 games += 1
                 # Save average score every 100 complete games (during training)
                 if games % 100 == 0:
-                    with open('./logs_' + GAME + '/scores.txt', 'a') as score_file:
+                    with open('./logs_' + GAME + '/scores_100avg.txt', 'a') as score_file:
                         # Write game/score data suitable for csv table
-                        score_file.write('%d, %f\n' % (games, avg_score/100))
+                        score_file.write('%d, %.4f\n' % (games, avg_score/100))
                     avg_score = 0
+
+                # Save every score (during training)
+                with open('./logs_' + GAME + '/scores_all.txt', 'a') as score_file:
+                    # Write game/score data suitable for csv table
+                    score_file.write('%d, %d\n' % (games, game_score))
 
             # sample a minibatch to train on
             minibatch = random.sample(D, BATCH)
