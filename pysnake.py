@@ -166,13 +166,13 @@ def trainNetwork(s, readout, h_fc1, sess):
                 if games % 100 == 0:
                     with open('./logs_' + GAME + '/scores_100avg.txt', 'a') as score_file:
                         # Write game/score data suitable for csv table
-                        score_file.write('%d, %f\n' % (games, avg_score/100))
+                        score_file.write('%d, %.4f\n' % (games, avg_score/100))
                     avg_score = 0
 
                 # Save every score (during training)
                 with open('./logs_' + GAME + '/scores_all.txt', 'a') as score_file:
                     # Write game/score data suitable for csv table
-                    score_file.write('%d, %f\n' % (games, game_score))
+                    score_file.write('%d, %d\n' % (games, game_score))
 
             # sample a minibatch to train on
             minibatch = random.sample(D, BATCH)
